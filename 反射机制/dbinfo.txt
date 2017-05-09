@@ -1,0 +1,4 @@
+driver=shujiku
+url=wangzhi
+username=asd
+password=123456

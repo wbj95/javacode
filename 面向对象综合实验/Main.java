@@ -1,0 +1,46 @@
+import java.applet.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.Scanner;
+
+import java.sql.*;
+public class Main {
+	public static void main(String[] args){
+		TextField input;
+		
+		while(true){
+		System.out.println("*************登陆界面***********");
+		System.out.println("            1.登陆");
+		System.out.println("            2.退出");
+		System.out.println("********************************");
+			
+	String name1,password1;
+	Scanner s=new Scanner(System.in);
+	int num1=s.nextInt();
+	if(num1==1){
+		System.out.println("请输入用户名：");
+		name1=s.next();
+		System.out.println("请输密码：");
+		password1=s.next();
+		if(name1!=null&&password1!=null){
+		User u1=null;
+		try{
+			u1=DataProcessing.searchUser(name1,password1);
+		}catch(SQLException e){
+			e.getStackTrace();
+			e.printStackTrace();
+		}catch(IllegalStateException ill){ill.printStackTrace();}
+			if(u1==null){
+			System.out.println("输入用户名或密码错误");
+			}
+		u1.showMenu();	
+		}
+	}else if(num1==2){System.out.println("退出系统");
+		System.exit(0);
+	}
+	else{System.out.println("输入错误");
+	}
+	
+    }
+	}
+}

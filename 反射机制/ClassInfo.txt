@@ -1,0 +1,2 @@
+classname=java.util.Date
+classname1=java.text.SimpleDateFormat

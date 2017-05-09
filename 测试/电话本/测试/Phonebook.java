@@ -1,0 +1,128 @@
+package 测试;
+
+import java.awt.DisplayMode;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.BufferUnderflowException;
+import java.util.Map;
+import java.util.StringTokenizer;
+import java.util.TreeMap;
+
+import javax.swing.JOptionPane;
+
+public class Phonebook {
+	private String name, phone;
+	Map<String, String> phones;//声明Map集合存储电话号码
+
+	public Phonebook() throws IOException {//文件输出、输入需要处理异常
+		name = phone = null;
+		phones = new TreeMap<String, String>();
+		readPhonebooks();//读入电话号码文件
+	}
+
+	private void readPhonebooks() throws IOException {//
+		File phoneData = new File("D:/javachengxu/测试/phones.txt");//创建输入文件名对象
+		BufferedReader in = new BufferedReader(new FileReader(phoneData));//创建文件输入对象
+		String line = in.readLine();//读一行记录
+		while (line != null) {//继续读入如果没有到文件结束
+			StringTokenizer token = new StringTokenizer(line, "\t");//分解记录
+			name = token.nextToken();//名字
+			phone = token.nextToken();//电话
+			phones.put(name, phone);//添加入集合
+			line = in.readLine();//读入下一行文件记录
+		}
+		in.close();///关闭文件输入
+	}
+
+	public void addRecord() throws IOException {
+		String message = null;
+		name = JOptionPane.showInputDialog(null, "please enter the name");
+		phone = JOptionPane.showInputDialog(null, "please enter the phone");
+		processDuplicate();//处理名字重复
+		phones.put(name, phone);//添加集合新单元
+		updatePhonebooks(name, phone);//更新文件记录
+		message = "The following record has been added to the phonebook:\n" + "Name/Email: " + name + "\n"
+				+ "Phone number:　" + phone + "\n";
+		JOptionPane.showMessageDialog(null, message);
+	}
+
+	public void processDuplicate() {
+		String email = null, message = null, choice = null;
+
+		while (phones.containsKey(name)) {//循环直到没有重复名字
+			message = "There is a duplicated name in the phonebook...\n" + "Enter 1 to use ohter name\n"//使用另外名字
+					+ "/Enter 2 to use email:";//使用email
+			choice = JOptionPane.showInputDialog(null, message);
+			if (choice.equals("1")) {
+				name = JOptionPane.showInputDialog(null, "Enter the new name:");
+				//得到新name
+			} else if (choice.equals("2")) {
+				email = JOptionPane.showInputDialog(null, "Enter the email adress:");
+				phone = name + " " + phone;
+				name = email;
+			}
+		}
+	}
+
+	public void updatePhonebooks(String name, String phone) throws IOException {
+		PrintWriter out = new PrintWriter(new FileWriter("D:/javachengxu/测试/phones.txt", true));
+		out.println(name + "\t" + phone);//更新操作
+		out.close();
+	}
+
+	public void search() throws IOException {//查找
+		String choice = null, message = "Enter the name or email address you want to search the phone#:",
+				name = JOptionPane.showInputDialog(null, message);
+		if (phones.containsKey(name)) {
+			phone = phones.get(name);
+			display(name, phone);
+		} else {
+			message = "This name or email is not in the phonebook...\n" + "Do you want to add into the record?(y/n):";
+			choice = JOptionPane.showInputDialog(null, message);
+			if (choice.matches("[y|Y]")) {
+				addRecord();
+			}
+		}
+	}
+
+	public void deleteRecord() {//删除
+		String message = null;
+		String name = null;
+		name = JOptionPane.showInputDialog(null, "Please entry the name/email you want to delete:");
+		if (phones.containsKey(name)) {
+			phone = phones.remove(name);
+		} else {
+			message = "Name you entered:" + name + "is not in the phonebook."
+					+ "please check your entry and try again...";
+			JOptionPane.showMessageDialog(null, message);
+		}
+	}
+
+	public void display(String name, String phone) {
+		String message = "Name/Email:" + name + "\n" + "Phone number:" + phone;
+		JOptionPane.showMessageDialog(null, message);
+	}
+
+	public void goodBye() {
+		JOptionPane.showMessageDialog(null, "Thank you for using the phonebook.");
+		System.exit(0);
+	}
+
+	public String makeChoice() {
+		String choice = null, message = "Welcome to phonebool...\n" + "Enter 1 to add phone record\n"
+				+ "Enter 2 to search phone number\n" + "Enter 3 to delete a record\n" + "Enter 4 to exit\n";
+		boolean done = false;
+		while (!done) {
+			choice = JOptionPane.showInputDialog(null, message);
+			if (choice.matches("[1|2|3|4]"))
+				done = true;
+			else
+				JOptionPane.showMessageDialog(null, "Wrong choice.please try again...");
+		}
+		return choice;
+	}
+}

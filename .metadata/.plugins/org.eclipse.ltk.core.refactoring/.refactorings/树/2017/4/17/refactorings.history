@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;树.TestBTPT&apos; to &apos;BinTree&apos;&#x0D;&#x0A;- Original project: &apos;树&apos;&#x0D;&#x0A;- Original element: &apos;树.TestBTPT&apos;&#x0D;&#x0A;- Renamed element: &apos;树.BinTree&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;TestBTPT&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;树{TestBTPT.java[TestBTPT" matchStrategy="1" name="BinTree" qualified="false" references="true" similarDeclarations="false" stamp="1493083270197" textual="false" version="1.0"/>
+</session>
